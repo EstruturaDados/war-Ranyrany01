@@ -1,113 +1,49 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
-/// Estrutura da sala (nó da árvore binária)
-typedef struct Sala {
-    char nome[40];
-    struct Sala *esquerda;
-    struct Sala *direita;
-} Sala;
+/// --------------------------------------------------------------
+/// Struct: Territorio
+/// Armazena os dados de um território: nome, cor do exército e tropas.
+/// --------------------------------------------------------------
+typedef struct {
+    char nome[30];
+    char cor[10];
+    int tropas;
+} Territorio;
 
-/// ------------------------------------------------------------------------
-/// Função: criarSala
-/// Objetivo: cria dinamicamente uma sala com o nome dado.
-/// Entrada: nome da sala
-/// Retorno: ponteiro para a sala criada
-/// ------------------------------------------------------------------------
-Sala* criarSala(const char* nome) {
-    Sala* nova = (Sala*) malloc(sizeof(Sala));
-
-    if (nova == NULL) {
-        printf("Erro ao alocar memória!\n");
-        exit(1);
-    }
-
-    strcpy(nova->nome, nome);
-    nova->esquerda = NULL;
-    nova->direita = NULL;
-    return nova;
-}
-
-/// ------------------------------------------------------------------------
-/// Função: explorarSalas
-/// Objetivo: permite que o jogador navegue pela árvore binária.
-/// O jogador escolhe 'e' (esquerda), 'd' (direita) ou 's' (sair).
-/// Exploração termina quando o usuário sai ou chega a uma sala sem caminhos.
-/// ------------------------------------------------------------------------
-void explorarSalas(Sala* atual) {
-    char escolha;
-
-    while (atual != NULL) {
-        printf("\nVocê está em: %s\n", atual->nome);
-
-        // Caso seja um nó folha (não possui caminhos)
-        if (atual->esquerda == NULL && atual->direita == NULL) {
-            printf("Você chegou a um cômodo sem caminhos. Fim da exploração!\n");
-            return;
-        }
-
-        printf("Escolha o caminho:\n");
-        printf("[e] Ir para a esquerda\n");
-        printf("[d] Ir para a direita\n");
-        printf("[s] Sair da exploração\n");
-        printf("Opção: ");
-        scanf(" %c", &escolha);
-
-        if (escolha == 'e' || escolha == 'E') {
-            if (atual->esquerda != NULL) {
-                atual = atual->esquerda;
-            } else {
-                printf("Não há sala à esquerda!\n");
-            }
-        }
-        else if (escolha == 'd' || escolha == 'D') {
-            if (atual->direita != NULL) {
-                atual = atual->direita;
-            } else {
-                printf("Não há sala à direita!\n");
-            }
-        }
-        else if (escolha == 's' || escolha == 'S') {
-            printf("Exploração encerrada pelo jogador.\n");
-            return;
-        }
-        else {
-            printf("Opção inválida! Tente novamente.\n");
-        }
-    }
-}
-
-/// ------------------------------------------------------------------------
-/// Função: main
-/// Objetivo: cria o mapa da mansão (árvore binária) e inicia a exploração.
-/// A árvore é fixa e criada manualmente conforme o requisito.
-/// ------------------------------------------------------------------------
 int main() {
-    // Criação das salas
-    Sala* hall = criarSala("Hall de Entrada");
-    Sala* salaEstar = criarSala("Sala de Estar");
-    Sala* cozinha = criarSala("Cozinha");
-    Sala* biblioteca = criarSala("Biblioteca");
-    Sala* jardim = criarSala("Jardim");
 
-    // Montagem da árvore (mapa da mansão)
-    //
-    //                Hall
-    //             /        \
-    //       Sala Estar     Cozinha
-    //         /                \
-    //   Biblioteca              Jardim
+    // Vetor para armazenar os 5 territórios
+    Territorio territórios[5];
 
-    hall->esquerda = salaEstar;
-    hall->direita = cozinha;
+    printf("=== Cadastro de Territórios ===\n");
 
-    salaEstar->esquerda = biblioteca;
-    cozinha->direita = jardim;
+    /// --------------------------------------------------------------
+    /// Entrada dos dados dos 5 territórios
+    /// --------------------------------------------------------------
+    for (int i = 0; i < 5; i++) {
+        printf("\n--- Território %d ---\n", i + 1);
 
-    // Início da exploração
-    printf("==== DETECTIVE QUEST – EXPLORADOR DE MANSÃO ====\n");
-    explorarSalas(hall);
+        printf("Nome do território: ");
+        scanf("%s", territórios[i].nome);
+
+        printf("Cor do exército: ");
+        scanf("%s", territórios[i].cor);
+
+        printf("Quantidade de tropas: ");
+        scanf("%d", &territórios[i].tropas);
+    }
+
+    /// --------------------------------------------------------------
+    /// Exibição dos territórios cadastrados
+    /// --------------------------------------------------------------
+    printf("\n\n=== Territórios cadastrados ===\n");
+    for (int i = 0; i < 5; i++) {
+        printf("\nTerritório %d:\n", i + 1);
+        printf("Nome: %s\n", territórios[i].nome);
+        printf("Cor do exército: %s\n", territórios[i].cor);
+        printf("Tropas: %d\n", territórios[i].tropas);
+    }
 
     return 0;
 }
